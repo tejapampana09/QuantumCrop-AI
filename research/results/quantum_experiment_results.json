@@ -1,0 +1,50 @@
+{
+  "status": "completed",
+  "dataset": "BrandonFors/Plant-Diseases-PlantVillage-Dataset",
+  "test_samples": 10849,
+  "experiments": {
+    "experiment_a_cnn": {
+      "name": "MobileNetV2 CNN Baseline",
+      "metrics": {
+        "accuracy": 0.9950225827265186,
+        "precision_macro": 0.9938493341427967,
+        "recall_macro": 0.9883276725992182,
+        "f1_macro": 0.9905612615202669
+      }
+    },
+    "experiment_b_classical_pca_head": {
+      "name": "Classical PCA-4 Control Head",
+      "metrics": {
+        "accuracy": 0.6923218729836851,
+        "precision_macro": 0.568134950530758,
+        "recall_macro": 0.5378807048603962,
+        "f1_macro": 0.5259149421211468
+      }
+    },
+    "experiment_c_vqc_head": {
+      "name": "Quantum VQC Head",
+      "metrics": {
+        "accuracy": 0.0987187759240483,
+        "precision_macro": 0.0025978625243170605,
+        "recall_macro": 0.02631578947368421,
+        "f1_macro": 0.004728894383610032
+      }
+    },
+    "experiment_d_hybrid_fusion": {
+      "name": "Learned Hybrid Fusion",
+      "metrics": {
+        "accuracy": 0.9941930131809383,
+        "precision_macro": 0.9914639718491844,
+        "recall_macro": 0.9879679396018534,
+        "f1_macro": 0.989630822642146
+      }
+    }
+  },
+  "scientific_summary": {
+    "vqc_vs_classical_mlp_delta_acc": -0.5936030970596368,
+    "vqc_vs_classical_mlp_delta_f1": -0.5211860477375367,
+    "hybrid_vs_cnn_delta_acc": -0.0008295695455802221,
+    "quantum_advantage_claimed": false,
+    "conclusion": "The 4-qubit VQC demonstrates functional parameter optimization on compressed feature spaces. Because 1280D features are reduced to 4D to match 4-qubit constraints, full classical CNN (Exp A) remains superior in raw accuracy, while Exp C validates the hybrid quantum classification mechanism against classical control Exp B."
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "accuracy": 0.9950225827265186,
+  "precision_macro": 0.9938493341427967,
+  "recall_macro": 0.9883276725992182,
+  "f1_macro": 0.9905612615202669,
+  "num_test_samples": 10849,
+  "num_classes": 38,
+  "checkpoint": "research/models/mobilenetv2_best.pt"
+}

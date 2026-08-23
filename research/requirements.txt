@@ -1,0 +1,14 @@
+# CPU-friendly research stack
+numpy>=1.26,<3
+pillow>=10.0
+scikit-learn>=1.4
+matplotlib>=3.8
+seaborn>=0.13
+joblib>=1.3
+scipy>=1.11
+# Install a CPU-compatible PyTorch/torchvision build for your OS, then:
+torch>=2.2
+torchvision>=0.17
+# Quantum layer
+qiskit>=1.2
+qiskit-aer>=0.15

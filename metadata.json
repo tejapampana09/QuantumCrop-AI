@@ -1,0 +1,9 @@
+{
+  "name": "QuantumCrop AI",
+  "description": "A real-world Hybrid Quantum-Classical AI system for crop disease detection, integrating IBM Quantum hardware for high-precision pathogen identification.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}

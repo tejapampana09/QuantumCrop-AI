@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+.venv/
+venv/
+env/
+
+# Build and distribution
+build/
+dist/
+coverage/
+
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Environment and secrets
+.env*
+!.env.example
+
+# OS and logs
+.DS_Store
+Thumbs.db
+*.log
+uploads/
+.system_generated/
+.user_uploaded/
+
+# Temporary test artifacts
+_temp_*
+_diag_*

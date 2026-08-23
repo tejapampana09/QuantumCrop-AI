@@ -1,0 +1,17 @@
+{
+  "total_evaluated": 60,
+  "crops_tested": [
+    "Apple",
+    "Potato",
+    "Tomato",
+    "Grape",
+    "Pepper,_bell",
+    "Corn_(maize)"
+  ],
+  "samples_per_crop": 10,
+  "overall_crop_identification_accuracy": 100.0,
+  "overall_disease_diagnosis_accuracy": 96.67,
+  "wrong_confident_rate": 0.0,
+  "safety_abstention_rate": 3.33,
+  "average_inference_latency_ms": 48.44
+}
