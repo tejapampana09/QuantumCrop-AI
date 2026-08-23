@@ -2,6 +2,7 @@ import express from "express";
 import { createServer as createViteServer } from "vite";
 import path from "path";
 import fs from "fs";
+import crypto from "crypto";
 import dotenv from "dotenv";
 import { exec } from "child_process";
 import { promisify } from "util";
@@ -69,7 +70,7 @@ async function startServer() {
       }
 
       const fileExt = mimeType === "image/jpeg" || mimeType === "image/jpg" ? ".jpg" : (mimeType === "image/webp" ? ".webp" : ".png");
-      const safeFilename = `scan_${Date.now()}_${Math.random().toString(36).substring(2, 9)}${fileExt}`;
+      const safeFilename = `scan_${Date.now()}_${crypto.randomUUID()}${fileExt}`;
       tempPath = path.join(tempDir, safeFilename);
       fs.writeFileSync(tempPath, buffer);
 

@@ -167,13 +167,6 @@ const COMPARISON_DATA = [
   { name: 'Exp D: Learned Hybrid Fusion', accuracy: 0.9942, f1: 0.9896 },
 ];
 
-const MARKET_VECTORS = [
-  { name: 'Rice', price: '$450/t', trend: 'up', change: '+8%', suggestion: 'HOLD', profitability: 88, forecast: '2 weeks' },
-  { name: 'Wheat', price: '$320/t', trend: 'down', change: '-3%', suggestion: 'SELL', profitability: 62, forecast: '1 week' },
-  { name: 'Corn', price: '$210/t', trend: 'up', change: '+5%', suggestion: 'HOLD', profitability: 75, forecast: '3 weeks' },
-  { name: 'Tomato', price: '$1.2/kg', trend: 'up', change: '+12%', suggestion: 'BUY', profitability: 92, forecast: '4 days' },
-];
-
 export default function App() {
   const [images, setImages] = useState<string[]>([]);
   const [isScanning, setIsScanning] = useState(false);
@@ -181,39 +174,14 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [chatInput, setChatInput] = useState("");
   const [chatHistory, setChatHistory] = useState<{role: string, text: string, sources?: any[]}[]>([]);
-  const [activeTab, setActiveTab] = useState<'scanner' | 'lab' | 'community'>('scanner');
+  const [activeTab, setActiveTab] = useState<'scanner' | 'lab'>('scanner');
   const [isValidating, setIsValidating] = useState(false);
   const [isChatting, setIsChatting] = useState(false);
   const [isFarmerMode, setIsFarmerMode] = useState(false);
   const [useRealQuantum, setUseRealQuantum] = useState(false);
-  const [marketVectors, setMarketVectors] = useState<any[]>(MARKET_VECTORS);
-  const [isFetchingMarket, setIsFetchingMarket] = useState(false);
   const [validationMetrics, setValidationMetrics] = useState<ValidationMetrics | null>(null);
   const [limitations, setLimitations] = useState<ProjectLimitations | null>(null);
   const [labTab, setLabTab] = useState<'training' | 'validation' | 'impact'>('training');
-  const [communityPosts, setCommunityPosts] = useState<any[]>([
-    {
-      id: '1',
-      uid: 'mock-1',
-      authorName: 'Dr. Aris Thorne',
-      disease: 'Late Blight Alert',
-      severity: 'high',
-      message: 'Detected high concentration of Phytophthora infestans in the northern sector. Recommend immediate copper-based fungicide application.',
-      location: '42.3601, -71.0589',
-      timestamp: new Date().toISOString()
-    },
-    {
-      id: '2',
-      uid: 'mock-2',
-      authorName: 'Farmer John',
-      disease: 'Early Blight Observation',
-      severity: 'medium',
-      message: 'Seeing some yellowing on the lower leaves of my tomato plants. Seems like early blight is starting to spread.',
-      location: '42.3601, -71.0589',
-      timestamp: new Date(Date.now() - 86400000).toISOString()
-    }
-  ]);
-  const [newPost, setNewPost] = useState("");
   const [healthyRef, setHealthyRef] = useState<string | null>(null);
   const [isGeneratingRef, setIsGeneratingRef] = useState(false);
   const [location, setLocation] = useState<{lat: number, lng: number} | null>(null);
@@ -439,20 +407,6 @@ QuantumCrop AI Node: Active // Genuine Pipeline
     return () => clearInterval(interval);
   }, [location]);
 
-  useEffect(() => {
-    if (activeTab === 'community' && marketVectors === MARKET_VECTORS) {
-      const loadMarketData = async () => {
-        setIsFetchingMarket(true);
-        const data = await fetchRealMarketData();
-        if (data && data.length > 0) {
-          setMarketVectors(data);
-        }
-        setIsFetchingMarket(false);
-      };
-      loadMarketData();
-    }
-  }, [activeTab]);
-
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     processFiles(files);
@@ -598,25 +552,6 @@ QuantumCrop AI Node: Active // Genuine Pipeline
     } finally {
       setIsChatting(false);
     }
-  };
-
-  const handlePost = async () => {
-    if (!newPost.trim()) return;
-    setCommunityPosts(prev => [
-      {
-        id: Date.now().toString(),
-        uid: 'user-mock',
-        authorName: 'You',
-        disease: 'General Observation',
-        severity: 'low',
-        message: newPost,
-        location: location ? `${location.lat},${location.lng}` : "Unknown",
-        timestamp: new Date().toISOString()
-      },
-      ...prev
-    ]);
-    setNewPost("");
-    toast.success("Post shared with community.");
   };
 
   const generateReference = async () => {
