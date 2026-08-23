@@ -54,7 +54,7 @@ import { Toaster, toast } from 'sonner';
 import Markdown from 'react-markdown';
 
 // Firebase & Gemini Services
-import { generateHealthyReference, speakDiagnosis, searchGrounding, mapsGrounding, translateAdvisory, analyzeCropImages, fetchRealMarketData } from './services/geminiService';
+import { generateHealthyReference, speakDiagnosis, searchGrounding, mapsGrounding, translateAdvisory, analyzeCropImages } from './services/geminiService';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -177,8 +177,6 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'scanner' | 'lab'>('scanner');
   const [isValidating, setIsValidating] = useState(false);
   const [isChatting, setIsChatting] = useState(false);
-  const [isFarmerMode, setIsFarmerMode] = useState(false);
-  const [useRealQuantum, setUseRealQuantum] = useState(false);
   const [validationMetrics, setValidationMetrics] = useState<ValidationMetrics | null>(null);
   const [limitations, setLimitations] = useState<ProjectLimitations | null>(null);
   const [labTab, setLabTab] = useState<'training' | 'validation' | 'impact'>('training');

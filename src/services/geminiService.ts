@@ -349,36 +349,3 @@ Return a valid JSON object matching this exact schema:
   fallbackAdvisory.additional_info = "AI advisory service temporarily unavailable. Displaying standard agronomic baseline.";
   return fallbackAdvisory;
 };
-
-export const fetchRealMarketData = async () => {
-  const prompt = `Fetch representative global market prices and trends for agricultural commodities: Rice, Wheat, Corn, Tomato. 
-  For each commodity, provide:
-  - Current price (with currency)
-  - Trend ("up" or "down")
-  - Percentage change
-  - Suggestion ("BUY", "SELL", or "HOLD")
-  - Profitability Index (0-100)
-  - Forecast period (e.g., "2 weeks")
-  
-  Return the response in JSON format as an array of objects:
-  [
-    { "name": "string", "price": "string", "trend": "up" | "down", "change": "string", "suggestion": "BUY" | "SELL" | "HOLD", "profitability": number, "forecast": "string" }
-  ]`;
-
-  try {
-    const ai = getAI();
-    if (!ai) return null;
-
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: prompt,
-      config: {
-        responseMimeType: "application/json"
-      }
-    });
-    return cleanJSON(response.text || "[]");
-  } catch (error) {
-    console.warn("Error fetching market data from AI:", error);
-    return null;
-  }
-};
