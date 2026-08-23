@@ -37,7 +37,9 @@ def test_dataset_audit_artifact_verified():
 
 def test_protected_baseline_files_unchanged():
     """Verify that forbidden files are present and not empty."""
-    ckpt = ROOT / "research/mobilenetv2_best.pt"
+    ckpt = ROOT / "research/models/mobilenetv2_best.pt"
+    if not ckpt.exists():
+        ckpt = ROOT / "research/mobilenetv2_best.pt"
     metrics = ROOT / "research/cnn_test_metrics.json"
     history = ROOT / "research/cnn_history.json"
     manifest = ROOT / "research/split_manifest.json"
