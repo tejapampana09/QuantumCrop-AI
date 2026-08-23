@@ -478,22 +478,23 @@ QuantumCrop AI Node: Active // Genuine Pipeline
         addLog(`Learned Hybrid Fusion evaluated (Prediction: ${qData.hybrid.prediction})`, "quantum");
       }
       
-      addLog("Querying Multimodal Vision Pathology Arbiter...", "info");
+      addLog("Generating Gemini agronomic pathology advisory...", "info");
       const aiAnalysis = await analyzeCropImages(imagesToScan, qData);
-      addLog(aiAnalysis.advisory_status === "active" ? "Multimodal Vision Pathology Arbiter ready." : "AI advisory offline (Standard agronomic guidelines shown).", "info");
+      addLog(aiAnalysis.advisory_status === "active" ? "Gemini Agronomic Advisory compiled." : "AI advisory offline (Standard agronomic guidelines shown).", "info");
 
-      const finalDisease = aiAnalysis.disease || qData.primaryDiagnosis.disease;
-      const finalConfidence = aiAnalysis.confidence || qData.primaryDiagnosis.confidence;
+      // MobileNetV2 is strictly the Primary Disease Classifier
+      const primaryDisease = qData.primaryDiagnosis?.disease || qData.cnn?.prediction || "Unknown";
+      const primaryConfidence = qData.primaryDiagnosis?.confidence ?? (qData.cnn?.confidence ? Number((qData.cnn.confidence * 100).toFixed(2)) : 0);
 
       setResult({
         ...qData,
         ...aiAnalysis,
-        disease: finalDisease,
-        confidence: finalConfidence,
+        disease: primaryDisease,
+        confidence: primaryConfidence,
         primaryDiagnosis: {
-          disease: finalDisease,
-          confidence: finalConfidence,
-          source: aiAnalysis.advisory_status === "active" ? "Multimodal Vision Pathology Arbiter" : "MobileNetV2 (1280D)"
+          disease: primaryDisease,
+          confidence: primaryConfidence,
+          source: "MobileNetV2 (1280D) Production Engine"
         }
       });
       setChatHistory([]);

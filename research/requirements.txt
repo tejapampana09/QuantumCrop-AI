@@ -12,3 +12,5 @@ torchvision>=0.17
 # Quantum layer
 qiskit>=1.2
 qiskit-aer>=0.15
+requests>=2.31
+pytest>=8.0

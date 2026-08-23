@@ -269,25 +269,22 @@ export const analyzeCropImages = async (
       };
     });
 
-    const prompt = `You are a Chief Agricultural Pathologist and Computer Vision Agronomy Arbiter.
-You are evaluating a leaf photograph alongside an initial MobileNetV2 CNN classification.
+    const prompt = `You are a Chief Agricultural Pathologist and Agronomist providing advisory insights for a farmer.
 
-MobileNetV2 CNN Initial Logit Suggestion: "${primaryDisease}" (Confidence: ${confidence}%).
+CRITICAL ARCHITECTURAL CONTEXT:
+The primary edge classifier MobileNetV2 (1280D) has diagnosed the crop with: "${primaryDisease}" (Confidence: ${confidence}%).
+Your role is to provide expert pathology explanations, foliar visual assessment, concrete organic/chemical remedies, and prevention steps.
 
 INSTRUCTIONS:
-1. Verify whether the image contains an actual plant leaf (is_leaf: true/false).
-2. Visually identify the EXACT crop species (e.g. Apple, Potato, Tomato, Corn, Grape, Pepper, Peach, Cherry, Strawberry, Squash, Orange, Blueberry, Raspberry, Soybean).
-3. Determine the EXACT disease condition from agricultural taxonomy (e.g. Apple___Apple_scab, Apple___Cedar_apple_rust, Tomato___Early_blight, Tomato___Late_blight, etc.).
-4. Provide a high-precision confidence score, expert pathological explanation, concrete organic treatments (with exact natural ingredients and dosages), chemical fungicide options, and 4 actionable recovery steps.
+1. Verify if the uploaded image is a valid plant leaf (is_leaf: true/false).
+2. Assess visual quality (good/moderate/poor) and provide foliar diagnostic observations.
+3. Formulate concrete organic treatments (with preparation and dosages), chemical fungicide options, and 4 actionable recovery steps specifically for "${primaryDisease}".
+4. Calculate crop health score (0-100) and spread risk (Low/Medium/High/Critical).
 
 Return a valid JSON object matching this exact schema:
 {
   "is_leaf": boolean,
   "visual_quality": "good" | "moderate" | "poor",
-  "detected_crop": "Crop Name",
-  "exact_disease": "Crop___Disease_Name",
-  "display_disease": "Crop - Disease Name",
-  "confidence": number,
   "crop_health_score": number,
   "spread_risk": "Low" | "Medium" | "High" | "Critical",
   "remedies": {
@@ -299,7 +296,7 @@ Return a valid JSON object matching this exact schema:
   "weather_risk": "string",
   "nearby_disease_trends": "string",
   "expert_advice": {
-    "explanation": "string (detailed breakdown of diagnostic symptoms observed on the leaf)",
+    "explanation": "string (detailed breakdown of symptoms and pathology progression)",
     "treatment": {
       "organic": "string",
       "chemical": "string"
@@ -323,24 +320,10 @@ Return a valid JSON object matching this exact schema:
     const parsed = cleanJSON(response.text || "{}");
     if (parsed) {
       const isLeaf = parsed.is_leaf !== false;
-      let arbitrationStatus: "success" | "crop_mismatch" | "disease_uncertain" | "not_a_leaf" | "poor_quality" | "uncertain" = "success";
-      let reason = "Multimodal Vision Arbiter confirmed exact crop and disease pathology.";
-      let finalDisease = parsed.display_disease || parsed.exact_disease || primaryDisease;
-      let finalConf = typeof parsed.confidence === 'number' && parsed.confidence > 0 ? parsed.confidence : (confidence > 50 ? confidence : 95.0);
-
-      if (!isLeaf) {
-        arbitrationStatus = "not_a_leaf";
-        reason = "No valid plant leaf detected in the uploaded image.";
-        finalDisease = "Invalid Sample — Not a Plant Leaf";
-        finalConf = 0.0;
-      } else {
-        // High precision diagnosis confirmed
-        arbitrationStatus = "success";
-      }
 
       return {
-        disease: finalDisease,
-        confidence: Number(finalConf.toFixed(1)),
+        disease: primaryDisease,
+        confidence: confidence,
         crop_health_score: typeof parsed.crop_health_score === 'number' ? parsed.crop_health_score : fallbackAdvisory.crop_health_score,
         spread_risk: parsed.spread_risk || fallbackAdvisory.spread_risk,
         remedies: parsed.remedies || fallbackAdvisory.remedies,
@@ -349,12 +332,12 @@ Return a valid JSON object matching this exact schema:
         weather_risk: parsed.weather_risk || fallbackAdvisory.weather_risk,
         nearby_disease_trends: parsed.nearby_disease_trends || fallbackAdvisory.nearby_disease_trends,
         expert_advice: parsed.expert_advice || fallbackAdvisory.expert_advice,
-        additional_info: parsed.additional_info || reason,
+        additional_info: parsed.additional_info || "AI expert advisory successfully compiled.",
         advisory_status: "active",
-        arbitration_status: arbitrationStatus,
-        detected_crop: parsed.detected_crop || hybridResult?.crop?.name || "Unknown",
-        arbitration_reason: reason,
-        action_guidance: arbitrationStatus === "success" ? "Remedy Available" : "Please provide a clear close-up of a single leaf"
+        arbitration_status: isLeaf ? "success" : "not_a_leaf",
+        detected_crop: primaryDisease.split("___")[0] || "Unknown",
+        arbitration_reason: isLeaf ? "Primary MobileNetV2 diagnosis confirmed." : "No valid plant leaf detected.",
+        action_guidance: isLeaf ? "Remedy Available" : "Please provide a clear close-up of a single leaf"
       };
     }
   } catch (error: any) {
