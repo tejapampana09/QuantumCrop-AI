@@ -478,15 +478,23 @@ QuantumCrop AI Node: Active // Genuine Pipeline
         addLog(`Learned Hybrid Fusion evaluated (Prediction: ${qData.hybrid.prediction})`, "quantum");
       }
       
-      addLog("Querying Gemini expert pathology advisory...", "info");
+      addLog("Querying Multimodal Vision Pathology Arbiter...", "info");
       const aiAnalysis = await analyzeCropImages(imagesToScan, qData);
-      addLog(aiAnalysis.advisory_status === "active" ? "Gemini Expert Advisory ready." : "AI advisory offline (Standard agronomic guidelines shown).", "info");
+      addLog(aiAnalysis.advisory_status === "active" ? "Multimodal Vision Pathology Arbiter ready." : "AI advisory offline (Standard agronomic guidelines shown).", "info");
+
+      const finalDisease = aiAnalysis.disease || qData.primaryDiagnosis.disease;
+      const finalConfidence = aiAnalysis.confidence || qData.primaryDiagnosis.confidence;
 
       setResult({
         ...qData,
         ...aiAnalysis,
-        disease: qData.primaryDiagnosis.disease,
-        confidence: qData.primaryDiagnosis.confidence,
+        disease: finalDisease,
+        confidence: finalConfidence,
+        primaryDiagnosis: {
+          disease: finalDisease,
+          confidence: finalConfidence,
+          source: aiAnalysis.advisory_status === "active" ? "Multimodal Vision Pathology Arbiter" : "MobileNetV2 (1280D)"
+        }
       });
       setChatHistory([]);
 
