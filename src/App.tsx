@@ -126,6 +126,9 @@ interface PredictionResult {
     improvement: string;
   };
   timestamp?: number;
+  arbitration_status?: string;
+  arbitration_reason?: string;
+  action_guidance?: string;
 }
 
 interface ValidationMetrics {
@@ -158,6 +161,7 @@ interface WeatherData {
   windSpeed: string;
   riskLevel: string;
   timestamp: string;
+  available?: boolean;
 }
 
 const COMPARISON_DATA = [
