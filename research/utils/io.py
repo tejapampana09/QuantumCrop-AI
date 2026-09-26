@@ -17,3 +17,10 @@ def save_json(path: str | Path, data: Any) -> None:
 
 def load_json(path: str | Path) -> Any:
     return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def load_json_safe(path: str | Path, default: Any = None) -> Any:
+    try:
+        return load_json(path)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return default
