@@ -20,3 +20,10 @@ def test_load_json_safe_invalid_json(tmp_path):
     
     assert load_json_safe(file_path, default={}) == {}
     assert load_json_safe(file_path) is None
+
+def test_load_json_safe_empty_file(tmp_path):
+    file_path = tmp_path / "empty.json"
+    file_path.write_text("")
+    
+    assert load_json_safe(file_path, default={}) == {}
+    assert load_json_safe(file_path) is None
