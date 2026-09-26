@@ -10,7 +10,7 @@ import joblib
 import numpy as np
 import torch
 from qiskit import QuantumCircuit
-from qiskit.circuit.library import RealAmplitudes, ZZFeatureMap
+from qiskit.circuit.library import real_amplitudes, zz_feature_map
 from qiskit.quantum_info import Statevector
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from torch import nn
@@ -28,8 +28,8 @@ class VQCCircuitSimulator:
         self.theta_dim = 2 * n_qubits * (reps)  # 8 parameters for reps=1
 
         # Base circuit template
-        self.fmap = ZZFeatureMap(n_qubits, reps=reps, entanglement="full")
-        self.ansatz = RealAmplitudes(n_qubits, reps=reps, entanglement="full")
+        self.fmap = zz_feature_map(n_qubits, reps=reps, entanglement="full")
+        self.ansatz = real_amplitudes(n_qubits, reps=reps, entanglement="full")
         self.base_circuit = QuantumCircuit(n_qubits)
         self.base_circuit.compose(self.fmap, inplace=True)
         self.base_circuit.compose(self.ansatz, inplace=True)

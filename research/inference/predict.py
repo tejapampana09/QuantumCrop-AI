@@ -11,7 +11,7 @@ import numpy as np
 import torch
 from PIL import Image
 from qiskit import QuantumCircuit
-from qiskit.circuit.library import RealAmplitudes, ZZFeatureMap
+from qiskit.circuit.library import real_amplitudes, zz_feature_map
 from qiskit.quantum_info import Statevector
 from torch import nn
 from torchvision import models, transforms
@@ -68,8 +68,8 @@ class PredictionPipeline:
                 self.vqc_params = json.load(f)
 
             self.theta = np.array(self.vqc_params["theta"])
-            self.vqc_fmap = ZZFeatureMap(4, reps=1, entanglement="full")
-            self.vqc_ansatz = RealAmplitudes(4, reps=1, entanglement="full")
+            self.vqc_fmap = zz_feature_map(4, reps=1, entanglement="full")
+            self.vqc_ansatz = real_amplitudes(4, reps=1, entanglement="full")
             self.vqc_base = QuantumCircuit(4)
             self.vqc_base.compose(self.vqc_fmap, inplace=True)
             self.vqc_base.compose(self.vqc_ansatz, inplace=True)
